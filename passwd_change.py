@@ -18,10 +18,16 @@ if __name__ == "__main__":
             with open(target_file, 'r') as t:
                 target_lines = t.readlines()
 
+            log = open('deletel.log', 'w')
+
             with open(result_file, 'w') as r:
                 for line in target_lines:
                     if line.split(':')[0] in keys or line.split(':')[3] != '12':
                         r.write(line)
+                    else:
+                        log.write(line)
+
+            log.close()
 
         except Exception as e:
             print(str(e))
