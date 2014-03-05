@@ -23,7 +23,8 @@ if __name__ == "__main__":
 
             with open(result_file, 'w') as r:
                 for line in target_lines:
-                    if line.split(':')[0] in keys or line.split(':')[3] != '12':
+                    if line.split(':')[0] in keys or \
+                       line.split(':')[3] != '12':
                         r.write(line)
                     else:
                         log.write(line)
@@ -34,4 +35,4 @@ if __name__ == "__main__":
             print(str(e))
             sys.exit()
     else:
-        print('./passwd_change.py keys_file.txt passwd_file result_file log_file')
+        print('python passwd_change.py keys passwd passwd_new log')
