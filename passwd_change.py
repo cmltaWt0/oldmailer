@@ -35,4 +35,6 @@ if __name__ == "__main__":
             print(str(e))
             sys.exit()
     else:
+        print('==================================================')
         print('python passwd_change.py keys passwd passwd_new log')
+        print('==================================================')
