@@ -19,39 +19,58 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
         passwd_log = open(passwd_log, 'w')
         passwd_new_keys = []
 
+        passwd_new_count = 0
+        passwd_del_count = 0
         with open(passwd_new, 'w') as pn:
             for line in passwd_lines:
                 if line.split(':')[0] in keys or line.split(':')[3] != '12':
                     pn.write(line)
                     passwd_new_keys.append(line.split(':')[0])
+                    passwd_new_count += 1
                 else:
                     passwd_log.write(line)
+                    passwd_del_count += 1
 
         passwd_log.close()
+
+        print('New passwd file have ' + str(passwd_new_count) + ' lines.')
+        print('Has been deleted ' + str(passwd_del_count) + ' lines.\n')
 
         with open(shadow_orig, 'r') as so:
             shadow_lines = so.readlines()
 
         shadow_log = open(shadow_log, 'w')
 
+        shadow_new_count = 0
+        shadow_del_count = 0
         with open(shadow_new, 'w') as sn:
             for line in shadow_lines:
                 if line.split(':')[0] in passwd_new_keys:
                     sn.write(line)
+                    shadow_new_count += 1
                 else:
                     shadow_log.write(line)
+                    shadow_del_count += 1
 
         shadow_log.close()
+
+        print('New shadow file have ' + str(shadow_new_count) + ' lines.')
+        print('Has been deleted ' + str(shadow_del_count) + ' lines.\n')
 
         passwd_names = [line.split(':')[0] for line in passwd_lines]
 
         missing = open(missing_log, 'w')
 
+        missing_count = 0
         for key in keys:
             if key not in passwd_names:
                 missing.write(key + '\n')
+                missing_count += 1
 
         missing.close()
+
+        print('There are ' + str(missing_count) +
+              ' missing names from ' + keys_file)
 
     except Exception as e:
         print(str(e))
