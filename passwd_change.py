@@ -6,7 +6,7 @@ import sys
 def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
                   passwd_new='passwd_new', passwd_log='passwd.log',
                   shadow_orig='shadow', shadow_new='shadow_new',
-                  shadow_log='shadow.log'):
+                  shadow_log='shadow.log', missing_log='missing.log'):
     try:
         with open(keys_file, 'r') as k:
             keys = k.readlines()
@@ -42,6 +42,16 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
                     shadow_log.write(line)
 
         shadow_log.close()
+
+        passwd_names = [line.split(':')[0] for line in passwd_lines]
+
+        missing = open(missing_log, 'w')
+
+        for key in keys:
+            if key not in passwd_names:
+                missing.write(key + '\n')
+
+        missing.close()
 
     except Exception as e:
         print(str(e))
