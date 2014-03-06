@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+import errno
 import sys
 
 
@@ -77,5 +79,23 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
         sys.exit()
 
 
+def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/'):
+    with open(passwd_log, 'r') as pl:
+        names_for_delete = [line.split(':')[0] for line in pl.readlines()]
+
+    deleted_count = 0
+    for name in names_for_delete:
+        try:
+            os.remove(maildir_path + name)
+            deleted_count += 1
+        except OSError as e:
+            if e.errno != errno.ENOENT:
+                raise
+
+    print('In directory ' + maildir_path + ' has been deleted ' +
+          str(deleted_count) + ' files.')
+
+
 if __name__ == "__main__":
     passwd_change()
+    mails_delete()
