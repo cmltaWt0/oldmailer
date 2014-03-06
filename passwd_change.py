@@ -86,8 +86,10 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/'):
     deleted_count = 0
     for name in names_for_delete:
         try:
-            os.remove(maildir_path + name)
-            deleted_count += 1
+            path = maildir_path + name
+            if path != maildir_path:
+                os.remove(maildir_path + name)
+                deleted_count += 1
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
