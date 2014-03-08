@@ -7,8 +7,7 @@ import sys
 
 def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
                   passwd_new='passwd_new', passwd_log='passwd.log',
-                  shadow_orig='shadow', shadow_new='shadow_new',
-                  shadow_log='shadow.log', missing_log='missing.log'):
+                  missing_log='missing.log'):
     try:
         with open(keys_file, 'r') as k:
             keys = k.readlines()
@@ -38,6 +37,30 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
         print('New passwd file have ' + str(passwd_new_count) + ' lines.')
         print('Has been deleted ' + str(passwd_del_count) + ' lines.\n')
 
+        passwd_names = [line.split(':')[0] for line in passwd_lines]
+        missing = open(missing_log, 'w')
+
+        missing_count = 0
+        for key in keys:
+            if key not in passwd_names:
+                missing.write(key + '\n')
+                missing_count += 1
+
+        missing.close()
+
+        print('There are ' + str(missing_count) +
+              ' missing names from ' + keys_file)
+
+    except Exception as e:
+        print(str(e))
+        sys.exit()
+
+    return keys, passwd_new_keys
+
+
+def shadow_change(keys, passwd_new_keys, shadow_orig='shadow',
+                  shadow_new='shadow_new', shadow_log='shadow.log'):
+    try:
         with open(shadow_orig, 'r') as so:
             shadow_lines = so.readlines()
 
@@ -58,22 +81,7 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
 
         print('New shadow file have ' + str(shadow_new_count) + ' lines.')
         print('Has been deleted ' + str(shadow_del_count) + ' lines.\n')
-
-        passwd_names = [line.split(':')[0] for line in passwd_lines]
-
-        missing = open(missing_log, 'w')
-
-        missing_count = 0
-        for key in keys:
-            if key not in passwd_names:
-                missing.write(key + '\n')
-                missing_count += 1
-
-        missing.close()
-
-        print('There are ' + str(missing_count) +
-              ' missing names from ' + keys_file)
-
+    
     except Exception as e:
         print(str(e))
         sys.exit()
@@ -99,5 +107,5 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/'):
 
 
 if __name__ == "__main__":
-    passwd_change()
+    shadow_change(*passwd_change())
     mails_delete()
