@@ -81,7 +81,7 @@ def shadow_change(keys, passwd_new_keys, shadow_orig='shadow',
 
         print('New shadow file have ' + str(shadow_new_count) + ' lines.')
         print('Has been deleted ' + str(shadow_del_count) + ' lines.\n')
-    
+
     except Exception as e:
         print(str(e))
         sys.exit()
