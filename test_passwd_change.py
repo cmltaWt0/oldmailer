@@ -17,11 +17,11 @@ class PasswdChange_Test(TestCase):
         """
         #TODO create passwd test file
         #TODO create shadow test file
-        #TODO create keys.txt file 
+        #TODO create keys.txt file
 
     def passwd_change_test(self):
-    	shadow_change(*passwd_change)
-    	mails_delete
+        shadow_change(*passwd_change)
+        mails_delete
 
 
 suite = TestLoader().loadTestsFromTestCase(PasswdChange_Test)
