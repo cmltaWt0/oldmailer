@@ -6,10 +6,6 @@ from unittest import TestCase, TestLoader, TextTestRunner
 import os
 
 
-#TODO add command line argument for locating mail directory
-#('/var/spool/mail/' or different)
-
-
 class PasswdChange_Test(TestCase):
     def setUp(self):
         """
