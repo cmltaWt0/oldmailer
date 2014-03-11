@@ -110,9 +110,6 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/'):
 
 
 if __name__ == "__main__":
-    maildir = '/var/spool/mail/'
-    if len(sys.argv) == 2:
-        maildir = sys.argv[1]
-
+    # Call functions with default args.
     shadow_change(*passwd_change())
-    mails_delete(maildir_path=maildir)
+    mails_delete()
