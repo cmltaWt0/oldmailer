@@ -88,6 +88,9 @@ def shadow_change(keys, passwd_new_keys, shadow_orig='shadow',
 
 
 def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/'):
+    if not maildir_path[-1] == '/':
+        maildir_path += '/'
+
     with open(passwd_log, 'r') as pl:
         names_for_delete = [line.split(':')[0] for line in pl.readlines()]
 
@@ -110,7 +113,6 @@ if __name__ == "__main__":
     maildir = '/var/spool/mail/'
     if len(sys.argv) == 2:
         maildir = sys.argv[1]
-        if not maildir[-1] == '/':
-            maildir += '/'
+
     shadow_change(*passwd_change())
     mails_delete(maildir_path=maildir)
