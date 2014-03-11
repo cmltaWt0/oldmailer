@@ -13,32 +13,59 @@ class PasswdChange_Test(TestCase):
         Preconditions
         """
         subprocess.call(['mkdir', 'test'])
-        subprocess.call(['touch', 'test/rvv', 'test/max',
-                         'test/bdv' ,'test/mail'])
-        #TODO create passwd test file
-        #TODO create shadow test file
-        #TODO create keys.txt file
+        subprocess.call(['touch', 'test/test', 'test/max',
+                         'test/root', 'test/mail', 'test/test_alive'])
+        # Create passwd test file
+        with open('passwd_test', 'w') as pt:
+            pt.write('root:x:0:0:root:/dir:/shell\n')
+            pt.write('max:x:1234:777:Account Max:/home/max:/bin/bash\n')
+            pt.write('mail:x:8:12:mail:/var/spool/mail:/sbin/nologin\n')
+            pt.write('test:x:9:12:test for deleting:/maildir:/shell\n')
+            pt.write('test_alive:x:9:12:test NOT deleting:/maildir:/shell\n')
+        # Create shadow test file
+        with open('shadow_test', 'w') as st:
+            st.write('root:testhash:12345:6:7777:8:::\n')
+            st.write('max:testhash:12345:6:7777:8:::\n')
+            st.write('mail:testhash:12345:6:7777:8:::\n')
+            st.write('test:testhash:12345:6:7777:8:::\n')
+            st.write('test_alive:testhash:12345:6:7777:8:::\n')
+        # Create keys.txt file
+        with open('keys_test.txt', 'w') as kt:
+            kt.write('test_alive\n')
+            kt.write('mail\n')
+            kt.write('missing_name\n')
 
     def tearDown(self):
         try:
-            if os.path.exists('test/rvv'):
-                raise Exception('test/rvv must not exist')
+            if os.path.exists('test/test'):
+                raise Exception('test/test must not exist')
             if not (os.path.exists('test/max') and
-                    os.path.exists('test/bdv') and
-                    os.path.exists('test/mail')):
-                raise Exception('File max, bdv or mail must exist!')
-        except:
+                    os.path.exists('test/root') and
+                    os.path.exists('test/mail') and
+                    os.path.exists('test/test_alive')):
+                raise Exception('File test_alive, max, root, mail must exist!')
+        except Exception:
             raise
-        else:
+        finally:
             subprocess.call(['rm', '-r', 'test/'])
 
     def test_passwd_change(self):
-        shadow_change(*passwd_change())
-        mails_delete(maildir_path='test')
+        shadow_change(*passwd_change(keys_file='keys_test.txt',
+                      passwd_orig='passwd_test', passwd_new='passwd_test_new',
+                      passwd_log='passwd_test.log',
+                      missing_log='missing_test.log'),
+                      shadow_orig='shadow_test', shadow_new='shadow_test_new',
+                      shadow_log='shadow_test.log')
+        mails_delete(passwd_log='passwd_test.log', maildir_path='test')
 
     def test_passwd_change_2(self):
-        shadow_change(*passwd_change())
-        mails_delete(maildir_path='test/')
+        shadow_change(*passwd_change(keys_file='keys_test.txt',
+                       passwd_orig='passwd_test', passwd_new='passwd_test_new',
+                       passwd_log='passwd_test.log',
+                       missing_log='missing_test.log'),
+                       shadow_orig='shadow_test', shadow_new='shadow_test_new',
+                       shadow_log='shadow_test.log')
+        mails_delete(passwd_log='passwd_test.log', maildir_path='test/')
 
 
 suite = TestLoader().loadTestsFromTestCase(PasswdChange_Test)
