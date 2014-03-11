@@ -118,7 +118,9 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/',
 if __name__ == "__main__":
     if len(sys.argv) == 2:
         if 'help' in sys.argv[1].lower():
-            print('python oldmailer.py [maildir_path="/var/spool/mail/"]')
+            print('python oldmailer.py [PATH]')
+	    print('PATH is a path to mail directory.')
+	    print('By default it is /var/spool/mail/')
             sys.exit()
         else:
 	    maildir_path = sys.argv[1]
