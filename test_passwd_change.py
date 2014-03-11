@@ -28,8 +28,9 @@ class PasswdChange_Test(TestCase):
                     os.path.exists('test/mail')):
                 raise Exception('File max, bdv or mail must exist!')
         except:
-            subprocess.call(['rm', '-r', 'test/'])
             raise
+        else:
+            subprocess.call(['rm', '-r', 'test/'])
 
     def test_passwd_change(self):
         shadow_change(*passwd_change())
