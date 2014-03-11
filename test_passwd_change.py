@@ -50,6 +50,10 @@ class PasswdChange_Test(TestCase):
             subprocess.call(['rm', '-r', 'test/'])
 
     def test_passwd_change(self):
+        """
+        Testing according to test passwd, shadow and keys.txt file.
+        Test to remove from test directory.
+        """
         shadow_change(*passwd_change(keys_file='keys_test.txt',
                       passwd_orig='passwd_test', passwd_new='passwd_test_new',
                       passwd_log='passwd_test.log',
@@ -59,6 +63,10 @@ class PasswdChange_Test(TestCase):
         mails_delete(passwd_log='passwd_test.log', maildir_path='test')
 
     def test_passwd_change_2(self):
+        """
+        Testing according to test passwd, shadow and keys.txt file.
+        Test to remove from test/ directory.
+        """
         shadow_change(*passwd_change(keys_file='keys_test.txt',
                        passwd_orig='passwd_test', passwd_new='passwd_test_new',
                        passwd_log='passwd_test.log',
