@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from passwd_change import passwd_change, shadow_change, mails_delete
+from oldmailer import passwd_change, shadow_change, mails_delete
 
 from unittest import TestCase, TestLoader, TextTestRunner
 import os
