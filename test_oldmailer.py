@@ -61,7 +61,8 @@ class PasswdChange_Test(TestCase):
                       shadow_orig='shadow_test', shadow_new='shadow_test_new',
                       shadow_log='shadow_test.log')
         mails_delete(passwd_log='passwd_test.log', maildir_path='test',
-                     deleted_log='deleted_test.log')
+                     deleted_log='deleted_test.log',
+                     not_deleted_log='not_deleted_test.log')
 
     def test_passwd_change_2(self):
         """
@@ -75,7 +76,8 @@ class PasswdChange_Test(TestCase):
                        shadow_orig='shadow_test', shadow_new='shadow_test_new',
                        shadow_log='shadow_test.log')
         mails_delete(passwd_log='passwd_test.log', maildir_path='test/',
-                     deleted_log='deleted_test.log')
+                     deleted_log='deleted_test.log',
+                     not_deleted_log='not_deleted_test.log')
 
 
 suite = TestLoader().loadTestsFromTestCase(PasswdChange_Test)

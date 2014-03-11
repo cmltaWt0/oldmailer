@@ -88,7 +88,7 @@ def shadow_change(keys, passwd_new_keys, shadow_orig='shadow',
 
 
 def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/',
-                 deleted_log='deleted.log'):
+                 deleted_log='deleted.log', not_deleted_log='not_deleted.log'):
     if not maildir_path[-1] == '/':
         maildir_path += '/'
 
@@ -96,6 +96,7 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/',
         names_for_delete = [line.split(':')[0] for line in pl.readlines()]
 
     deleted_log = open(deleted_log, 'w')
+    not_deleted_log = open(not_deleted_log, 'w')
 
     deleted_count = 0
     for name in names_for_delete:
@@ -108,7 +109,9 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/',
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
+            not_deleted_log.write(name + '\n')
 
+    not_deleted_log.close()
     deleted_log.close()
 
     print('In directory ' + maildir_path + ' has been deleted ' +
