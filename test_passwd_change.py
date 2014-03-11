@@ -14,7 +14,7 @@ class PasswdChange_Test(TestCase):
         """
         subprocess.call(['mkdir', 'test'])
         subprocess.call(['touch', 'test/rvv', 'test/max',
-                         'test/bdv', 'test/mail'])
+                         'test/mail'])
         #TODO create passwd test file
         #TODO create shadow test file
         #TODO create keys.txt file
@@ -31,12 +31,6 @@ class PasswdChange_Test(TestCase):
     def test_passwd_change(self):
         shadow_change(*passwd_change())
         mails_delete(maildir_path='test')
-        if os.path.exists('test/rvv'):
-            raise Exception('test/rvv must not exist')
-        if not (os.path.exists('test/max') and
-                os.path.exists('test/bdv') and
-                os.path.exists('test/mail')):
-            raise Exception('File max, bdv or mail must exist!')
 
     def test_passwd_change_2(self):
         shadow_change(*passwd_change())
