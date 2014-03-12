@@ -16,24 +16,27 @@ class PasswdChange_Test(TestCase):
         subprocess.call(['touch', 'test/test', 'test/max',
                          'test/root', 'test/mail', 'test/test_alive'])
         # Create passwd test file
-        with open('passwd_test', 'w') as pt:
-            pt.write('root:x:0:0:root:/dir:/shell\n')
-            pt.write('max:x:1234:777:Account Max:/home/max:/bin/bash\n')
-            pt.write('mail:x:8:12:mail:/var/spool/mail:/sbin/nologin\n')
-            pt.write('test:x:9:12:test for deleting:/maildir:/shell\n')
-            pt.write('test_alive:x:9:12:test NOT deleting:/maildir:/shell\n')
+        pt = open('passwd_test', 'w')
+        pt.write('root:x:0:0:root:/dir:/shell\n')
+        pt.write('max:x:1234:777:Account Max:/home/max:/bin/bash\n')
+        pt.write('mail:x:8:12:mail:/var/spool/mail:/sbin/nologin\n')
+        pt.write('test:x:9:12:test for deleting:/maildir:/shell\n')
+        pt.write('test_alive:x:9:12:test NOT deleting:/maildir:/shell\n')
+        pt.close()
         # Create shadow test file
-        with open('shadow_test', 'w') as st:
-            st.write('root:testhash:12345:6:7777:8:::\n')
-            st.write('max:testhash:12345:6:7777:8:::\n')
-            st.write('mail:testhash:12345:6:7777:8:::\n')
-            st.write('test:testhash:12345:6:7777:8:::\n')
-            st.write('test_alive:testhash:12345:6:7777:8:::\n')
+        st = open('shadow_test', 'w')
+        st.write('root:testhash:12345:6:7777:8:::\n')
+        st.write('max:testhash:12345:6:7777:8:::\n')
+        st.write('mail:testhash:12345:6:7777:8:::\n')
+        st.write('test:testhash:12345:6:7777:8:::\n')
+        st.write('test_alive:testhash:12345:6:7777:8:::\n')
+        st.close()
         # Create keys.txt file
-        with open('keys_test.txt', 'w') as kt:
-            kt.write('test_alive\n')
-            kt.write('mail\n')
-            kt.write('missing_name\n')
+        kt = open('keys_test.txt', 'w')
+        kt.write('test_alive\n')
+        kt.write('mail\n')
+        kt.write('missing_name\n')
+        kt.close()
 
     def tearDown(self):
         try:

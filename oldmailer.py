@@ -9,28 +9,31 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
                   passwd_new='passwd_new', passwd_log='passwd.log',
                   missing_log='missing.log'):
     try:
-        with open(keys_file, 'r') as k:
-            keys = k.readlines()
-            keys = [key.strip().split('@')[0] for key in keys]
-            keys = [key for key in keys if key != '']
+        k = open(keys_file, 'r')
+        keys = k.readlines()
+        keys = [key.strip().split('@')[0] for key in keys]
+        keys = [key for key in keys if key != '']
+        k.close()
 
-        with open(passwd_orig, 'r') as po:
-            passwd_lines = po.readlines()
+        po = open(passwd_orig, 'r')
+        passwd_lines = po.readlines()
+        po.close()
 
         passwd_log = open(passwd_log, 'w')
         passwd_new_keys = []
 
         passwd_new_count = 0
         passwd_del_count = 0
-        with open(passwd_new, 'w') as pn:
-            for line in passwd_lines:
-                if line.split(':')[0] in keys or line.split(':')[3] != '12':
-                    pn.write(line)
-                    passwd_new_keys.append(line.split(':')[0])
-                    passwd_new_count += 1
-                else:
-                    passwd_log.write(line)
-                    passwd_del_count += 1
+        pn = open(passwd_new, 'w')
+        for line in passwd_lines:
+            if line.split(':')[0] in keys or line.split(':')[3] != '12':
+                pn.write(line)
+                passwd_new_keys.append(line.split(':')[0])
+                passwd_new_count += 1
+            else:
+                passwd_log.write(line)
+                passwd_del_count += 1
+        pn.close()
 
         passwd_log.close()
 
@@ -61,21 +64,23 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
 def shadow_change(keys, passwd_new_keys, shadow_orig='shadow',
                   shadow_new='shadow_new', shadow_log='shadow.log'):
     try:
-        with open(shadow_orig, 'r') as so:
-            shadow_lines = so.readlines()
+        so = open(shadow_orig, 'r')
+        shadow_lines = so.readlines()
+        so.close()
 
         shadow_log = open(shadow_log, 'w')
 
         shadow_new_count = 0
         shadow_del_count = 0
-        with open(shadow_new, 'w') as sn:
-            for line in shadow_lines:
-                if line.split(':')[0] in passwd_new_keys:
-                    sn.write(line)
-                    shadow_new_count += 1
-                else:
-                    shadow_log.write(line)
-                    shadow_del_count += 1
+        sn = open(shadow_new, 'w')
+        for line in shadow_lines:
+            if line.split(':')[0] in passwd_new_keys:
+                sn.write(line)
+                shadow_new_count += 1
+            else:
+                shadow_log.write(line)
+                shadow_del_count += 1
+        sn.close()
 
         shadow_log.close()
 
@@ -92,8 +97,9 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/',
     if not maildir_path[-1] == '/':
         maildir_path += '/'
 
-    with open(passwd_log, 'r') as pl:
-        names_for_delete = [line.split(':')[0] for line in pl.readlines()]
+    pl = open(passwd_log, 'r')
+    names_for_delete = [line.split(':')[0] for line in pl.readlines()]
+    pl.close()
 
     deleted_log = open(deleted_log, 'w')
     not_deleted_log = open(not_deleted_log, 'w')
