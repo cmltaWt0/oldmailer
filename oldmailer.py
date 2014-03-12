@@ -122,14 +122,29 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         if 'help' in sys.argv[1].lower():
             print('python oldmailer.py [PATH]')
-	    print('PATH is a path to mail directory.')
-	    print('By default it is /var/spool/mail/')
+            print('PATH is a path to mail directory.')
+            print('By default it is /var/spool/mail/')
             sys.exit()
         else:
-	    maildir_path = sys.argv[1]
+            maildir_path = sys.argv[1]
     else:
         maildir_path = '/var/spool/mail/'
 
     # Call functions with default args.
     shadow_change(*passwd_change())
-    mails_delete(maildir_path=maildir_path)
+
+    passwd_log = open('passwd.log', 'r')
+    print('It the directory ' + maildir_path + ' will be deleted ' +
+          str(len(passwd_log.readlines())))
+    passwd_log.close()
+    try:
+        user_input = raw_input('Want to continue? y/N ')
+    except NameError:
+        user_input = input('Want to continue? y/N ')
+    if not user_input:
+        user_input = 'N'
+
+    if user_input.lower() == 'y':
+        mails_delete(maildir_path=maildir_path)
+    else:
+        sys.exit()
