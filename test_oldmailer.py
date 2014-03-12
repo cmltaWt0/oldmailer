@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 from oldmailer import passwd_change, shadow_change, mails_delete
 
