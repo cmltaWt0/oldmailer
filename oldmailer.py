@@ -112,9 +112,9 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/',
                 os.remove(path)
                 deleted_count += 1
                 deleted_log.write(name + '\n')
-        except OSError:
-            if e.errno != errno.ENOENT:
-                raise
+        except OSError, failure:
+            #if failure.errno != errno.ENOENT:
+            #    raise
             not_deleted_log.write(name + '\n')
 
     not_deleted_log.close()
