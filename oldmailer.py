@@ -54,8 +54,8 @@ def passwd_change(keys_file='keys.txt', passwd_orig='passwd',
         print('There are ' + str(missing_count) +
               ' missing names from ' + keys_file)
 
-    except Exception as e:
-        print(str(e))
+    except Exception, failure:
+        print(str(failure))
         sys.exit()
 
     return keys, passwd_new_keys
@@ -87,8 +87,8 @@ def shadow_change(keys, passwd_new_keys, shadow_orig='shadow',
         print('New shadow file have ' + str(shadow_new_count) + ' lines.')
         print('Has been deleted ' + str(shadow_del_count) + ' lines.\n')
 
-    except Exception as e:
-        print(str(e))
+    except Exception, failure:
+        print(str(failure))
         sys.exit()
 
 
@@ -112,7 +112,7 @@ def mails_delete(passwd_log='passwd.log', maildir_path='/var/spool/mail/',
                 os.remove(path)
                 deleted_count += 1
                 deleted_log.write(name + '\n')
-        except OSError as e:
+        except OSError:
             if e.errno != errno.ENOENT:
                 raise
             not_deleted_log.write(name + '\n')
@@ -137,7 +137,8 @@ if __name__ == "__main__":
         maildir_path = '/var/spool/mail/'
 
     # Call functions with default args.
-    shadow_change(*passwd_change())
+    keys, passwd_new_keys = passwd_change()
+    shadow_change(keys, passwd_new_keys)
 
     passwd_log = open('passwd.log', 'r')
     print('It the directory ' + maildir_path + ' will be deleted ' +

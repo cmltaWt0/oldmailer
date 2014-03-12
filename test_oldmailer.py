@@ -57,11 +57,11 @@ class PasswdChange_Test(TestCase):
         Testing according to test passwd, shadow and keys.txt file.
         Test to remove from test directory.
         """
-        shadow_change(*passwd_change(keys_file='keys_test.txt',
-                      passwd_orig='passwd_test', passwd_new='passwd_test_new',
-                      passwd_log='passwd_test.log',
-                      missing_log='missing_test.log'),
-                      shadow_orig='shadow_test', shadow_new='shadow_test_new',
+        keys, passwd_new_keys = passwd_change(keys_file='keys_test.txt',
+                                              passwd_orig='passwd_test', passwd_new='passwd_test_new',
+                                              passwd_log='passwd_test.log',
+                                              missing_log='missing_test.log')
+        shadow_change(keys, passwd_new_keys, shadow_orig='shadow_test', shadow_new='shadow_test_new',
                       shadow_log='shadow_test.log')
         mails_delete(passwd_log='passwd_test.log', maildir_path='test',
                      deleted_log='deleted_test.log',
@@ -72,12 +72,12 @@ class PasswdChange_Test(TestCase):
         Testing according to test passwd, shadow and keys.txt file.
         Test to remove from test/ directory.
         """
-        shadow_change(*passwd_change(keys_file='keys_test.txt',
-                       passwd_orig='passwd_test', passwd_new='passwd_test_new',
-                       passwd_log='passwd_test.log',
-                       missing_log='missing_test.log'),
-                       shadow_orig='shadow_test', shadow_new='shadow_test_new',
-                       shadow_log='shadow_test.log')
+        keys, passwd_new_keys = passwd_change(keys_file='keys_test.txt',
+                                              passwd_orig='passwd_test', passwd_new='passwd_test_new',
+                                              passwd_log='passwd_test.log',
+                                              missing_log='missing_test.log')
+        shadow_change(keys, passwd_new_keys, shadow_orig='shadow_test', shadow_new='shadow_test_new',
+                     shadow_log='shadow_test.log')
         mails_delete(passwd_log='passwd_test.log', maildir_path='test/',
                      deleted_log='deleted_test.log',
                      not_deleted_log='not_deleted_test.log')
