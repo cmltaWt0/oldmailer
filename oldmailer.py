@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
     passwd_log = open('passwd.log', 'r')
     print('It the directory ' + maildir_path + ' will be deleted ' +
-          str(len(passwd_log.readlines())))
+          str(len(passwd_log.readlines()) + ' files.'))
     passwd_log.close()
     try:
         user_input = raw_input('Want to continue? y/N ')
